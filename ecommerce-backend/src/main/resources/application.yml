@@ -1,0 +1,66 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ecommerce-platform
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecommerce_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
+  
+  security:
+    user:
+      name: admin
+      password: admin
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: 86400000 # 24 hours
+
+# Payment Configuration
+payment:
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_your_key_here}
+    publishable-key: ${STRIPE_PUBLISHABLE_KEY:pk_test_your_key_here}
+  paypal:
+    client-id: ${PAYPAL_CLIENT_ID:your_client_id}
+    client-secret: ${PAYPAL_CLIENT_SECRET:your_client_secret}
+
+# ML Recommendation Configuration
+ml:
+  recommendation:
+    algorithm: collaborative-filtering
+    min-interactions: 5
+    recommendation-count: 10
+    similarity-threshold: 0.3
+
+# Inventory Management
+inventory:
+  low-stock-threshold: 10
+  auto-restock: false
+
+logging:
+  level:
+    com.ecommerce: DEBUG
+    org.springframework.security: INFO
+
